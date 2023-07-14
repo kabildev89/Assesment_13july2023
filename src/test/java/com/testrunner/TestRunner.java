@@ -10,7 +10,7 @@ import io.cucumber.junit.CucumberOptions;
 
 @CucumberOptions(glue = { "com.stepdefinitions", "com.hooks" }, features = "src/test/resources/",
 
-		plugin = { "pretty", "html:target/Reports" }, monochrome = true,
+		plugin = { "pretty", "html:CucumberReports/Reports" }, monochrome = true,
 
 		tags = "@cart")
 

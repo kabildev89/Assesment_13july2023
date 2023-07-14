@@ -3,17 +3,16 @@ package com.testrunner;
 
 import org.junit.runner.RunWith;
 
-import cucumber.api.CucumberOptions;
-import cucumber.api.junit.Cucumber;
+import io.cucumber.junit.Cucumber;
+import io.cucumber.junit.CucumberOptions;
 
 @RunWith(Cucumber.class)
 
-@CucumberOptions(glue = { "com.stepdefinitions",
-		"com.ebay.hooks" }, monochrome = true, features = "src/test/resources/",
+@CucumberOptions(glue = { "com.stepdefinitions", "com.hooks" }, features = "src/test/resources/",
 
-		plugin = { "pretty", "html:Reports" },
+		plugin = { "pretty", "html:target/Reports" }, monochrome = true,
 
-		tags = { "@ebay" })
+		tags = "@cart")
 
 public class TestRunner {
 

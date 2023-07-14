@@ -1,57 +1,43 @@
 package com.pages;
 
-import java.util.ArrayList;
+import java.time.Duration;
 import java.util.List;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.google.inject.Inject;
 import com.helpers.Utils;
+import com.hooks.Hooks;
+import com.pageobjects.HomePageObject;
 
 public class HomePage {
-	private WebDriver webDriver;
+	HomePageObject homePageObj = new HomePageObject();
+	private WebDriver driver = Hooks.getDriver();
 
-	By Home_Img = By.id("gh-la");
-	By Search_Item = By.xpath("//input[@id='gh-ac']");
-	By Search_icon = By.xpath("//input[@id='gh-btn']");
+	Actions action = new Actions(driver);
+	WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
 
-	@Inject
-	public HomePage(WebDriver webDriver) {
-		this.webDriver = webDriver;
-	}
+	public void addItemsToTheCart(int itemCount) {
 
-	public WebElement getWebElement(final By elementPath) {
-		if (!webDriver.findElements(elementPath).isEmpty())
-			return webDriver.findElement(elementPath);
-		else
-			return null;
-	}
-
-	public List<WebElement> getWebElements(final By elementPath) {
-		if (!webDriver.findElements(elementPath).isEmpty())
-			return webDriver.findElements(elementPath);
-		else
-			return null;
-	}
-
-	public void launch_URL(String URL) throws Exception {
-		webDriver.get(URL);
-		WebElement Homeimg = getWebElement(Home_Img);
-		if (Homeimg.isDisplayed()) {
-			System.out.println("Home page displayed");
+		List<WebElement> items = driver.findElements(homePageObj.item);
+		List<WebElement> addCartBtn = driver.findElements(homePageObj.addToCart);
+		for (int i = 0; i < itemCount; i++) {
+			action.moveToElement(items.get(i)).build().perform();
+			Utils.wait(1000);
+			addCartBtn.get(i).click();
+			Utils.wait(1000);
 		}
 
 	}
 
-	public void searchItem(String itemname) {
-		Utils.wait(2000);
-		WebElement searchField = getWebElement(Search_Item);
-		searchField.sendKeys(itemname);
-		WebElement searchButton = getWebElement(Search_icon);
-		searchButton.click();
-		System.out.println("item is searched");
+	public void viewCart() {
+		wait.until(ExpectedConditions.visibilityOfElementLocated(homePageObj.viewCart));
+		List<WebElement> viewCartBtn = driver.findElements(homePageObj.viewCart);
+		viewCartBtn.get(3).click();
+		Utils.wait(4000);
 	}
 
 }
